@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html style="height: 600px; width: 600px">
+  <head>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.5.0/jszip.min.js"
+      integrity="sha512-y3o0Z5TJF1UsKjs/jS2CDkeHN538bWsftxO9nctODL5W40nyXIbs0Pgyu7//icrQY9m6475gLaVr39i/uh/nLA=="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/g/filesaver.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"
+      integrity="sha512-90vH1Z83AJY9DmlWa8WkjkV79yfS2n2Oxhsi2dZbIv0nC4E6m5AbH8Nh156kkM7JePmqD6tcZsfad1ueoaovww=="
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript" src="popup.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body style="height: 600px; width: 600px">
+    <div id="loading">
+      <img id="loading-image" src="images/loading.gif" alt="Loading..." />
+    </div>
+    <h3 id="title" style="font-weight: bold; text-align: center">N/A</h3>
+    <table border="1" cellpadding="3" style="border-collapse: collapse">
+      <tr>
+        <td nowrap>Total number of reviews:</td>
+        <td align="right"><span id="total">N/A</span></td>
+      </tr>
+      <tr>
+        <td nowrap>Number of photos captured:</td>
+        <td align="right"><span id="photos">N/A</span></td>
+      </tr>
+    </table>
+    <button id="capture" type="button">Capture</button>
+    <button id="dl_all" type="button">Download Pictures</button>
+    <div class="wrapper" id="photo-grid"></div>
+  </body>
+</html>
