@@ -7,26 +7,27 @@ var photoIds = [];
 var profileName;
 var wrapper;
 const setDOMInfo = (info) => {
-  info.photos.forEach((element) => {
-    var id = /p\/([^']*)\//.exec(element)[1];
-    if (!_.includes(photoIds, id)) {
-      photoIds.push(id);
-
-      var src = element + "media?size=l";
+  info.photoInfo.forEach((element) => {
+    if (!_.includes(photoIds, element.id)) {
+      // photoInfo.push({
+      //   id: photoId,
+      //   link: photoLink,
+      //   place: photoPlace,
+      //   address: photoAddress,
+      // });
+      photoIds.push(element.id);
+      // var src = element + "media?size=l";
 
       var anchor = document.createElement("a");
-
-      anchor.id = id;
-      anchor.href = src;
+      anchor.id = element.id;
+      anchor.href = element.link;
       anchor.download = "image";
       var img = document.createElement("img");
       img.classList.add("dl");
-      img.src = src;
-
+      img.src = element.link;
       toDataURL(img.src, function (dataURL) {
         img.src = dataURL;
       });
-
       anchor.appendChild(img);
       wrapper.appendChild(anchor);
     }
@@ -63,7 +64,6 @@ window.addEventListener("DOMContentLoaded", () => {
   );
 
   document.getElementById("capture").addEventListener("click", () => {
-    console.log(document.getElementById("capture-count").value);
     document.getElementById("loading").style.display = "block";
     // ...query for the active tab...
     chrome.tabs.query(
@@ -82,22 +82,6 @@ window.addEventListener("DOMContentLoaded", () => {
         );
       }
     );
-    // chrome.tabs.query(
-    //   {
-    //     active: true,
-    //     currentWindow: true,
-    //   },
-    //   (tabs) => {
-    //     // ...and send a request for the DOM info...
-    //     chrome.tabs.sendMessage(
-    //       tabs[0].id,
-    //       { from: "popup", subject: "scrollDown" },
-    //       // ...also specifying a callback to be called
-    //       //    from the receiving end (content script).
-    //       null
-    //     );
-    //   }
-    // );
   });
 
   document.getElementById("dl_all").addEventListener("click", download_all);
@@ -107,7 +91,7 @@ function download(data) {
   const a = document.createElement("a");
 
   a.href = "data:application/zip;base64," + data;
-  a.setAttribute("download", profileName + "-instagram.zip");
+  a.setAttribute("download", profileName + "-burpple.zip");
   a.style.display = "none";
   a.addEventListener("click", (e) => e.stopPropagation()); // not relevant for modern browsers
   document.body.appendChild(a);
