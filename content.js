@@ -39,8 +39,8 @@ chrome.runtime.onMessage.addListener((msg, sender, response) => {
       photoInfo.push({
         id: photoId,
         link: photoLink,
-        place: photoPlace,
-        address: photoAddress,
+        place: photoPlace.trim(),
+        address: photoAddress.trim(),
       });
     });
 
@@ -57,6 +57,7 @@ chrome.runtime.onMessage.addListener((msg, sender, response) => {
       total: document.querySelector(".profile-page__stats > ul > li")
         .textContent,
       profile: /.com\/@([^']*)\//.exec(location.href)[1],
+      link: /([^']*)\/timeline/.exec(location.href)[1],
     };
 
     // Directly respond to the sender (popup),

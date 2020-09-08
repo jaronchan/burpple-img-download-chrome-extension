@@ -5,6 +5,7 @@ window.onload = function () {
 
 var photoIds = [];
 var profileName;
+var profileLink;
 var wrapper;
 const setDOMInfo = (info) => {
   info.photoInfo.forEach((element) => {
@@ -22,13 +23,26 @@ const setDOMInfo = (info) => {
       anchor.id = element.id;
       anchor.href = element.link;
       anchor.download = "image";
+      anchor.classList.add("dl");
+
       var img = document.createElement("img");
-      img.classList.add("dl");
+      img.classList.add("download-image");
       img.src = element.link;
       toDataURL(img.src, function (dataURL) {
         img.src = dataURL;
       });
+
+      var place = document.createElement("p");
+      place.textContent = element.place;
+      place.classList.add("place");
+
+      var address = document.createElement("p");
+      address.textContent = element.address;
+      address.classList.add("address");
+
       anchor.appendChild(img);
+      anchor.appendChild(place);
+      anchor.appendChild(address);
       wrapper.appendChild(anchor);
     }
   });
@@ -38,8 +52,10 @@ const setDOMInfo = (info) => {
 
 const setBaseInfo = (info) => {
   profileName = info.profile;
+  profileLink = info.link;
   document.getElementById("title").textContent = info.profile + "'s profile";
   document.getElementById("total").textContent = info.total;
+  document.getElementById("profile-link").textContent = info.link;
 };
 
 // Once the DOM is ready...
@@ -106,12 +122,27 @@ function download(data) {
 function download_all() {
   document.getElementById("loading").style.display = "block";
 
+  var csvString = "fileName;place,;address;creditName;creditSocial\n";
+
   var zip = new JSZip();
-  [...document.getElementsByClassName("dl")].forEach((img, i) =>
-    zip.file("img" + i + ".jpg", img.src.replace(/data:.*?;base64,/, ""), {
+  [...document.getElementsByClassName("dl")].forEach((anchor, i) => {
+    var img = anchor.querySelector(".download-image");
+    var fileName = profileName + "-img-" + i + ".jpg";
+    var place = anchor
+      .querySelector(".place")
+      .textContent.replace(/[']/g, "\\$&");
+    var address = anchor
+      .querySelector(".address")
+      .textContent.replace(/[']/g, "\\$&");
+
+    var csvRow = [fileName, place, address, profileName, profileLink].join(";");
+    csvString += csvRow + "\n";
+
+    zip.file(fileName, img.src.replace(/data:.*?;base64,/, ""), {
       base64: true,
-    })
-  );
+    });
+  });
+  zip.file(profileName + "-img-details.csv", csvString);
   zip.generateAsync({ type: "base64" }).then(download);
 }
 
